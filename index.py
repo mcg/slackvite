@@ -38,8 +38,8 @@ form_html = '''
         Name: {{ form.name }}<br>
         Email: {{ form.email }}<br>
         Reason: {{ form.reason }}<br>
-        <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div><br>
         {{ form.submit }}
+        <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div><br>
     </form>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
