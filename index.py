@@ -1,11 +1,23 @@
 #!/usr/bin/env -S uv --cache-dir ./.cache run 
 
 from flask import Flask, request, render_template_string
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired, Email
+from flask_wtf.csrf import CSRFProtect
 from wsgiref.handlers import CGIHandler
 import requests
 import os
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
+
+class InputForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    reason = StringField('Reason', validators=[DataRequired()])
+    captcha = StringField('Captcha', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 form_html = '''
 <!DOCTYPE html>
@@ -49,13 +61,12 @@ def post_to_slack(name, email, reason):
 
 @app.route('/', methods=['GET', 'POST'])
 def form():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        reason = request.form['reason']
-        post_to_slack(name, email, reason)
-        return f'Name: {name}, Email: {email}, Reason: {reason}'
-    return render_template_string(form_html)
+    form = InputForm()
+    if form.validate_on_submit():
+        post_to_slack(form.name.data, form.email.data, form.reason.data)
+        return f'Name: {form.name.data}, Email: {form.email.data}, Reason: {form.reason.data}'
+
+    return render_template_string(form_html, form=form, captcha=captcha)
 
 if __name__ == "__main__":
     os.environ['FLASK_ENV'] = 'development'
