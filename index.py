@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv --cache-dir ./.cache run 
 
-from flask import Flask, request, render_template, request, redirect, url_for, flash
+from flask import Flask, request, render_template_string, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Email
@@ -102,7 +102,7 @@ def index():
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f"Error in {getattr(form, field).label.text}: {error}")
-    return render_template(form_html, form=form, turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
+    return render_template_string(form_html, form=form, turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
 
 if __name__ == "__main__":
     os.environ['FLASK_ENV'] = 'development'
