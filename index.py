@@ -97,7 +97,7 @@ def index():
 
         post_to_slack(form.name.data, form.email.data, form.reason.data)
         flash("Form submitted successfully!")
-        return redirect(url_for('index'))
+        return redirect(url_for('success'))
     else:
         for field, errors in form.errors.items():
             for error in errors:
