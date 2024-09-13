@@ -11,7 +11,7 @@ import os
 
 app = Flask(__name__)
 
-app.config['TURNSTILE_SECRET_KEY'] = os.getenv('TURNSTILE_SECRET_KEY'
+app.config['TURNSTILE_SECRET_KEY'] = os.getenv('TURNSTILE_SECRET_KEY')
 app.secret_key = os.getenv('FLASK_CSRF_KEY')
 if not app.secret_key:
     raise ValueError("FLASK_CSRF_KEY environment variable not set")
