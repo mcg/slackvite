@@ -72,7 +72,7 @@ def index():
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f"Error in {getattr(form, field).label.text}: {error}")
-    return render_template('index.html', turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
+    return render_template('index.html', form=form, turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
 
 @app.route('/success')
 def success():
