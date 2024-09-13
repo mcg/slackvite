@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv --cache-dir ./.cache run 
 
-from flask import Flask, request, render_template_string, request, redirect, url_for, flash
+from flask import Flask, request, render_template, render_template_string, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Email
