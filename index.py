@@ -21,7 +21,6 @@ class InputForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     reason = StringField('Reason', validators=[DataRequired()])
-    captcha = StringField('Captcha', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 form_html = '''
