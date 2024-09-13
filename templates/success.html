@@ -1,11 +1,8 @@
-<!-- success.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Form Submitted</title>
-</head>
-<body>
-    <h2>Form Submitted Successfully!</h2>
+{% extends "base.html" %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+    <h2>Form submitted successfully!</h2>
     <p>Thank you for your submission.</p>
-</body>
-</html>
+{% endblock %}

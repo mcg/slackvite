@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv --cache-dir ./.cache run 
 
-from flask import Flask, request, render_template, render_template_string, request, redirect, url_for, flash
+from flask import Flask, request, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Email
@@ -23,36 +23,6 @@ class InputForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     reason = StringField('Reason', validators=[DataRequired()])
     submit = SubmitField('Submit')
-
-form_html = '''
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Invite Me</title>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-</head>
-<body>
-    <h2>Slack Invite</h2>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        Name: {{ form.name }}<br>
-        Email: {{ form.email }}<br>
-        Reason: {{ form.reason }}<br>
-        {{ form.submit }}
-        <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div><br>
-    </form>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-</body>
-</html>
-'''
 
 def post_to_slack(name, email, reason):
     webhook_url = os.getenv('SLACK_WEBHOOK_URL')
@@ -102,7 +72,7 @@ def index():
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f"Error in {getattr(form, field).label.text}: {error}")
-    return render_template_string(form_html, form=form, turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
+    return render_template('index.html', turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
 
 @app.route('/success')
 def success():
