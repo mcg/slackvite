@@ -11,10 +11,10 @@ form_html = '''
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Form</title>
+    <title>Invite Me</title>
 </head>
 <body>
-    <h2>Input Form</h2>
+    <h2>Slack Invite</h2>
     <form method="POST">
         Name: <input type="text" name="name"><br>
         Email: <input type="email" name="email"><br>
