@@ -70,7 +70,7 @@ def form():
         post_to_slack(form.name.data, form.email.data, form.reason.data)
         return f'Name: {form.name.data}, Email: {form.email.data}, Reason: {form.reason.data}'
 
-    return render_template_string(form_html, form=form, captcha=captcha)
+    return render_template_string(form_html, form=form)
 
 if __name__ == "__main__":
     os.environ['FLASK_ENV'] = 'development'
