@@ -32,10 +32,11 @@ form_html = '''
 <body>
     <h2>Slack Invite</h2>
     <form method="POST">
-        Name: <input type="text" name="name"><br>
-        Email: <input type="email" name="email"><br>
-        Reason: <input type="text" name="reason"><br>
-        <input type="submit" value="Submit">
+        {{ form.hidden_tag() }}
+        Name: {{ form.name }}<br>
+        Email: {{ form.email }}<br>
+        Reason: {{ form.reason }}<br>
+        {{ form.submit }}
     </form>
 </body>
 </html>
