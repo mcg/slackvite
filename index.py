@@ -67,6 +67,16 @@ def post_to_slack(name, email, reason):
     response = requests.post(webhook_url, json=payload)
     response.raise_for_status()
 
+def verify_turnstile(response):
+    secret_key = app.config['TURNSTILE_SECRET_KEY']
+    verify_url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+    payload = {
+        'secret': secret_key,
+        'response': response
+    }
+    r = requests.post(verify_url, data=payload)
+    return r.json().get('success', False)
+
 @app.route('/', methods=['GET', 'POST'])
 def form():
     form = InputForm()
