@@ -2,7 +2,7 @@
 
 from flask import Flask, request, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, EmailField
 from wtforms.validators import DataRequired, Email
 from flask_wtf.csrf import CSRFProtect
 from wsgiref.handlers import CGIHandler
@@ -20,7 +20,7 @@ csrf = CSRFProtect(app)
 
 class InputForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
     reason = StringField('Reason', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
