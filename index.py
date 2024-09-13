@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv --cache-dir ./.cache run 
 
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Email
@@ -41,6 +41,15 @@ form_html = '''
         <div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div><br>
         {{ form.submit }}
     </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>
 '''
@@ -78,17 +87,22 @@ def verify_turnstile(response):
     return r.json().get('success', False)
 
 @app.route('/', methods=['GET', 'POST'])
-def form():
+def index():
     form = InputForm()
     if form.validate_on_submit():
         turnstile_response = request.form.get('cf-turnstile-response')
         if not verify_turnstile(turnstile_response):
-            return "Turnstile verification failed. Please try again."
+            flash("Turnstile verification failed. Please try again.")
+            return redirect(url_for('index'))
 
         post_to_slack(form.name.data, form.email.data, form.reason.data)
-        return f'Name: {form.name.data}, Email: {form.email.data}, Reason: {form.reason.data}'
-
-    return render_template_string(form_html, form=form, turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
+        flash("Form submitted successfully!")
+        return redirect(url_for('index'))
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"Error in {getattr(form, field).label.text}: {error}")
+    return render_template(form_html, form=form, turnstile_site_key=os.getenv('TURNSTILE_SITE_KEY'))
 
 if __name__ == "__main__":
     os.environ['FLASK_ENV'] = 'development'
