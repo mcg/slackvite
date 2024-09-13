@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Slackvite{% endblock %}
+
+{% block content %}
+    <h2>Slack Invite</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        {{ form.name.label }} {{ form.name(size=32) }}<br>
+        {{ form.email.label }} {{ form.email(size=32) }}<br>
+        {{ form.reason.label }} {{ form.reason(size=32) }}<br>
+        <input type="submit" v<div class="cf-turnstile" data-sitekey="{{ turnstile_site_key }}"></div><br>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}malue="Submit">
+    </form>
+{% endblock %}
